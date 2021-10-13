@@ -1,5 +1,22 @@
 import json
 
+def create_response(status_code, res):
+    # Clean up anything that is not JSON serializable
+    response = json.dumps(res, default = date_converter)
+    print({
+        'statusCode': status_code,
+        'body': response
+    })
+    return {
+        'statusCode': status_code,
+        'headers': {
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
+        'body': response
+    }
+
 def lambda_handler(event, context):
     '''
     function that gets called when the lambda is called
@@ -15,10 +32,7 @@ def lambda_handler(event, context):
         'body': json.dumps(event),
     })
     print('-------------Lambda Ended Successfully')
-    return {
-        'statusCode': 200,
-        'body': json.dumps(event),
-    }
+    return create_response(200, event)
 
 if __name__=='__main__':
     # Example Event sent by AWS API Gateway
