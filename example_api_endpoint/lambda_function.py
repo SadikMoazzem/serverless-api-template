@@ -1,5 +1,11 @@
 import json
 
+def date_converter(o):
+    if isinstance(o, datetime):
+        return o.__str__()
+    if isinstance(o, date):
+        return o.__str__()
+
 def create_response(status_code, res):
     # Clean up anything that is not JSON serializable
     response = json.dumps(res, default = date_converter)
